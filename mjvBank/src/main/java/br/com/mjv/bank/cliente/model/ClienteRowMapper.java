@@ -1,4 +1,4 @@
-package br.com.mjv.model;
+package br.com.mjv.bank.cliente.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +21,7 @@ public class ClienteRowMapper implements RowMapper<Cliente> {
 		cliente.setNome(rs.getString("nome"));
 		cliente.setUsuario(rs.getString("usuario"));
 		cliente.setCpf(rs.getString("cpf"));
-		cliente.setSaldo(rs.getDouble("cpf"));
+		cliente.setSaldo(rs.getDouble("saldo"));
 		cliente.setAgencia(rs.getInt("agencia"));
 		cliente.setConta(rs.getInt("conta"));
 		

@@ -10,6 +10,8 @@
 		<meta charset="UTF-8">
 		<title>Login</title>
 		
+		<style type="text/css"  ></style>
+		
 		<!-- CSS -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 		
@@ -40,7 +42,10 @@
 			    <input type="password" name="senha" class="form-control" id="txtSenha">
 			</div>
 		  	
-		  	<button type="submit" class="btn btn-primary">Autenticar</button>
+		  	<div class="text-center">
+			  	<button type="submit" class="btn btn-primary">Autenticar</button>
+			  	<a href="/cliente/cadastrar" class="btn btn-success">Cadastre-se</a>
+			</div>
 		</form>
 	   </div>
 	   

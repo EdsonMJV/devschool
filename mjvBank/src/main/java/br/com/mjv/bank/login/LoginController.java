@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.mjv.bank.cliente.model.Cliente;
 import br.com.mjv.bank.login.service.LoginService;
-import br.com.mjv.model.Cliente;
 
 @Controller
 @RequestMapping("/login")
