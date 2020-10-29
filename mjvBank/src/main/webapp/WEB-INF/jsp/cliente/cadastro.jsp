@@ -18,6 +18,8 @@
 		<!-- jQuery and JS bundle w/ Popper.js -->
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+		
+		<link rel="stylesheet" href="/css/bank.css">
 	</head>
 
 	<body>
@@ -25,12 +27,13 @@
 		<h1 class="text-center" style="padding-top: 40px;">MJV Bank</h1>
 
 		<div class="container" style="width: 40%; padding-top: 40px">
-		    <c:if test='${not empty mensagem}'>
-				<div class="alert alert-danger" role="alert">
-				  <c:out value="${mensagem}" />
-				</div>
-		    </c:if>
-		
+		    
+		    <ul>
+			    <c:forEach items="${mensagem}" var="msg">
+					<li class="msgErro">${msg}</li>	    
+			    </c:forEach>
+		    </ul>
+		    
 			<form action="/cliente/cadastrar" method="post">
 				<div class="form-group">
 			    	<label for="formGroupExampleInput">Nome</label>

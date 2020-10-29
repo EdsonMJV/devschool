@@ -1,10 +1,17 @@
 package br.com.mjv.bank.cliente.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.mjv.bank.cliente.model.Cliente;
@@ -18,43 +25,67 @@ public class ClienteController {
 	@Autowired
 	private ClienteService service;
 	
+	private static final String MENSAGEM = "mensagem";
+	
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClienteController.class);
+	
+	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	public ModelAndView meusDados(@PathVariable Integer id) {
+		return new ModelAndView("cliente/meusdados");
+	}
 	
 	@RequestMapping(path = "/cadastrar", method = RequestMethod.GET)
 	public String cadastrarCliente() {
+		LOGGER.info("Inicio do metodo cadastrarCliente()");
+		
+		LOGGER.info("Fim do metodo cadastrarCliente()");
 		return "cliente/cadastro";
 	}
 	
 	
 	@RequestMapping(path = "/cadastrar", method = RequestMethod.POST)
 	public String incluirCliente(Cliente cliente, RedirectAttributes atributos) {
+		LOGGER.info("Inicio do metodo incluirCliente()");
+		
+		List<String> mensagens = new ArrayList<>();
 		
 		if(StringUtils.isEmpty(cliente.getNome())) {
-			atributos.addFlashAttribute("mensagem", "Nome não informado");
-			return "redirect:/cliente/cadastrar";
+			mensagens.add("Nome não informado");
 		}
 		
 		if(StringUtils.isEmpty(cliente.getUsuario())) {
-			//RETORNA ERRO PARA A TELA
-			atributos.addFlashAttribute("mensagem", "Usuário não informado");
-			return "redirect:/cliente/cadastrar";
+			mensagens.add("Usuário não informado");
 		}
 		
 		if(StringUtils.isEmpty(cliente.getCpf())) {
-			atributos.addFlashAttribute("mensagem", "CPF não informado");
-			return "redirect:/cliente/cadastrar";
+			mensagens.add("CPF não informado");
 		}
 		
 		try {
+			
+			if(!mensagens.isEmpty()) {
+				atributos.addFlashAttribute(MENSAGEM, mensagens);
+				return "redirect:/cliente/cadastrar";
+			}
+			
 			Integer id = service.incluirCliente(cliente);
+			LOGGER.info("Fim do metodo incluirCliente()");
+			return "redirect:/cliente/" + id;
+			
 		} catch (BusinessException be) {
-			atributos.addFlashAttribute("mensagem", "Houve um erro ao incluir o cliente: " + be.getMessage());
+			mensagens.add("Houve um erro ao incluir o cliente: " + be.getMessage());
+			atributos.addFlashAttribute(MENSAGEM, mensagens);
+			LOGGER.error("Houve um erro ao incluir o cliente: " + be.getMessage(), be);
 			return "redirect:/cliente/cadastrar";
 		} catch (Exception e) {
-			atributos.addFlashAttribute("mensagem", "Houve um erro ao incluir o cliente");
+			mensagens.add("Houve um erro ao incluir o cliente");
+			atributos.addFlashAttribute(MENSAGEM, mensagens);
+			LOGGER.error("Houve um erro ao incluir o cliente: " + e.getMessage(), e);
 			return "redirect:/cliente/cadastrar";
 		}
 		
-		return "";
+		
 	}
 	
 }

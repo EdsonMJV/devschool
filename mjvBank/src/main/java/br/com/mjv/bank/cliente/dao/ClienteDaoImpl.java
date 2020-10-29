@@ -5,11 +5,16 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -19,8 +24,13 @@ import br.com.mjv.bank.cliente.model.ClienteRowMapper;
 @Repository
 public class ClienteDaoImpl implements ClienteDao {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClienteDaoImpl.class);
+	
 	@Autowired
 	private NamedParameterJdbcTemplate template;
+	
+	@Autowired
+	private DataSource ds;
 	
 	@Override
 	public Cliente buscarPorId(Integer id) {
@@ -82,6 +92,7 @@ public class ClienteDaoImpl implements ClienteDao {
 			
 			return cliente;
 		} catch (EmptyResultDataAccessException e) {
+			LOGGER.info("Não foi encontado cliente com o usuario: " + usuario);
 			return null;
 		}
 		
@@ -89,7 +100,54 @@ public class ClienteDaoImpl implements ClienteDao {
 
 	@Override
 	public Integer incluirCliente(Cliente cliente) {
+		
+		SimpleJdbcInsert insertCliente = new SimpleJdbcInsert(ds).usingGeneratedKeyColumns("id");
+		insertCliente.withTableName("TB_CLIENTE");
+		 
+		Map<String, Object> params = new HashMap<>();
+		
+		params.put("nome", cliente.getNome());
+		params.put("usuario", cliente.getUsuario());
+		params.put("cpf", cliente.getCpf());
+		params.put("agencia", cliente.getAgencia());
+		params.put("conta", cliente.getConta());
+		params.put("saldo", 0);
+		 
+		Integer result = (Integer) insertCliente.executeAndReturnKey(params);
+		return result;
+		
+		
+		
+		
+		/*
 		StringBuilder sql = new StringBuilder(" INSERT INTO TB_CLIENTE (nome, usuario, cpf, agencia, conta) VALUES ");
+		sql.append("(?, ?, ?, ?, ?)");
+		
+    	KeyHolder keyHolder = new GeneratedKeyHolder();
+    	template.getJdbcTemplate().update(
+    	    new PreparedStatementCreator() {
+    	        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+    	            PreparedStatement pst = con.prepareStatement(sql.toString(), new String[] {"id"});
+    	            pst.setString(1, cliente.getNome());
+    	            pst.setString(2, cliente.getUsuario());
+    	            pst.setString(3, cliente.getCpf());
+    	            pst.setInt(4, cliente.getAgencia());
+    	            pst.setInt(5, cliente.getConta());
+    	            return pst;
+    	        }
+    	    },
+    	    keyHolder);
+    	return (Integer)keyHolder.getKey();
+		*/
+		
+		
+		
+		
+		
+		
+		
+		
+		/*StringBuilder sql = new StringBuilder(" INSERT INTO TB_CLIENTE (nome, usuario, cpf, agencia, conta) VALUES ");
 		sql.append("(:nome, :usuario, :cpf, :agencia, :conta)");
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
@@ -102,7 +160,7 @@ public class ClienteDaoImpl implements ClienteDao {
 		
 		template.update(sql.toString(), params);
 		
-		return buscarClienteUsuario(cliente.getUsuario()).getId();
+		return buscarClienteUsuario(cliente.getUsuario()).getId();*/
 	}
 
 
