@@ -34,4 +34,9 @@ public class ClienteServiceImpl implements ClienteService {
 		return dao.incluirCliente(cliente);
 	}
 
+	@Override
+	public Cliente buscarPorId(Integer id) {
+		return dao.buscarPorId(id);
+	}
+
 }

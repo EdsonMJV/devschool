@@ -24,42 +24,8 @@
 	</head>
 
 	<body>
-		<header>
-			<nav class="navbar navbar-light bg-light">
-			  <span class="navbar-brand mb-0 h1">MJV Bank</span>
-			</nav>
-		</header>
-		
-		<main>
-			<div class="container" style="width :70%; padding-bottom: 30px;">
-			
-				<nav aria-label="breadcrumb">
-				  <ol class="breadcrumb" style="background-color: white; padding-left: 0px;">
-				     <li class="breadcrumb-item" aria-current="page"><a href='/cliente/<c:out value="${cliente.id}" />'>Home</a></li>
-				    <li class="breadcrumb-item active" aria-current="page">Meus Dados</li>
-				  </ol>
-				</nav>
-			
-				<article>
-					<h1 class="card-title" style="margin-bottom: 20px"><span><c:out value="${cliente.nome}" /></span></h1>
-					
-					<p class="card-subtitle mb-2 text-muted">
-						CPF: <span class="cpf"><c:out value="${cliente.cpf}" /></span>
-						<br />
-						Agência: <span><c:out value="${cliente.agencia}"></c:out></span>
-						<br />
-						Conta: <span class="cc"><c:out value="${cliente.conta}" /> </span>
-					</p>
-				</article>
-				
-			</div>
-		</main>
+
+		<h1>Transferencia</h1>
+
 	</body>
-	
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('#cpf').mask("000.000.000-00");
-				$('.cc').mask("#####-#");
-			});
-		</script>
 </html>

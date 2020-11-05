@@ -34,8 +34,19 @@ public class ClienteDaoImpl implements ClienteDao {
 	
 	@Override
 	public Cliente buscarPorId(Integer id) {
-		
-		return null;
+		try {
+			StringBuilder sql = new StringBuilder(" SELECT * FROM TB_CLIENTE WHERE id = :id ");
+
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("id", id);
+			
+			Cliente cliente = template.queryForObject(sql.toString(), params, new ClienteRowMapper());
+			
+			return cliente;
+		} catch (EmptyResultDataAccessException e) {
+			LOGGER.info("Não foi encontado cliente com o id: " + id);
+			return null;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -12,4 +12,11 @@ public interface ClienteService {
 	 * @throws BusinessException Exception disparada se o cliente informado tem usuario ja cadastrado previamente no banco.
 	 */
 	Integer incluirCliente(Cliente cliente) throws BusinessException;
+	
+	/**
+	 * Retorna um {@link Cliente} com base no id informado.
+	 * @param id
+	 * @return
+	 */
+	Cliente buscarPorId(Integer id);
 }

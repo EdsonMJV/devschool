@@ -32,7 +32,12 @@ public class ClienteController {
 	
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ModelAndView meusDados(@PathVariable Integer id) {
-		return new ModelAndView("cliente/meusdados");
+		
+		ModelAndView mv = new ModelAndView("cliente/meusdados");
+		Cliente cliente = service.buscarPorId(id);
+		mv.addObject("cliente", cliente);
+		
+		return mv;
 	}
 	
 	@RequestMapping(path = "/cadastrar", method = RequestMethod.GET)
