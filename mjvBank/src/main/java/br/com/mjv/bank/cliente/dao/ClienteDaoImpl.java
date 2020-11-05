@@ -174,5 +174,19 @@ public class ClienteDaoImpl implements ClienteDao {
 		return buscarClienteUsuario(cliente.getUsuario()).getId();*/
 	}
 
+	@Override
+	public Cliente findClienteByAgenciaConta(Integer agencia, Integer conta) {
+		try {
+			String sql = "SELECT * FROM TB_CLIENTE WHERE agencia = :agencia AND conta = :conta";
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("agencia", agencia);
+			params.addValue("conta", conta);
+			return template.queryForObject(sql, params, new ClienteRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			LOGGER.info("Não foi encontado cliente com agencia: " + agencia + " e conta: " + conta);
+			return null;
+		}
+	}
+
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.mjv.bank.cliente.dao.ClienteDao;
 import br.com.mjv.bank.cliente.model.Cliente;
 import br.com.mjv.bank.exception.BusinessException;
+import br.com.mjv.bank.operacao.model.Operacao;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -37,6 +38,17 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public Cliente buscarPorId(Integer id) {
 		return dao.buscarPorId(id);
+	}
+
+	@Override
+	public Cliente findClienteByAgenciaConta(Integer agencia, Integer conta) {
+		return dao.findClienteByAgenciaConta(agencia, conta);
+	}
+
+	@Override
+	public void realizarTransferencia(Integer idCliente, Operacao operacao) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

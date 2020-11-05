@@ -2,6 +2,8 @@ package br.com.mjv.bank.operacao.model;
 
 import java.util.Date;
 
+import br.com.mjv.bank.cliente.model.Cliente;
+
 /**
  * Modelo referente a tabela TB_OPERACAO 
  * @author edson.costa
@@ -13,6 +15,8 @@ public class Operacao {
 	private Date data;
 	private Double valor;
 	private String descricao;
+	
+	private Cliente cliente;
 	
 	public Integer getIdCliente() {
 		return idCliente;
@@ -53,5 +57,13 @@ public class Operacao {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 }

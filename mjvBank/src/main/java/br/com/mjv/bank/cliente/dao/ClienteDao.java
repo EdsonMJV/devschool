@@ -25,5 +25,7 @@ public interface ClienteDao {
 	 */
 	Integer incluirCliente(Cliente cliente);
 
+	Cliente findClienteByAgenciaConta(Integer agencia, Integer conta);
+
 	
 }
