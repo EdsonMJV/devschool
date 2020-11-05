@@ -4,28 +4,92 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
-
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>MeusDados</title>
+		<title>Transferência</title>
 		
-		<style type="text/css"  ></style>
-		
-		<!-- CSS -->
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-		
-		<!-- jQuery and JS bundle w/ Popper.js -->
-		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-		
-		<link rel="stylesheet" href="/css/bank.css">
+		<!-- JQUERY -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+		
+		<!-- BOOTSTRAP -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+		
 	</head>
-
 	<body>
-
-		<h1>Transferencia</h1>
-
+		<header>
+			<nav class="navbar navbar-light bg-light">
+			  <span class="navbar-brand mb-0 h1">MJV Bank</span>
+			</nav>
+		</header>
+		
+		<div class="container" style="width :70%;">
+		
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb" style="background-color: white; padding-left: 0px;">
+			     <li class="breadcrumb-item" aria-current="page"><a href='/cliente/<c:out value="${cliente.id}" />'>Home</a></li>
+			     <li class="breadcrumb-item active" aria-current="page">Transferência</li>
+			  </ol>
+			</nav>
+			
+			<form action='/cliente/<c:out value="${id}" />/transferencia' method="post">
+				<input type="hidden" name="cliente.id" id="hdId" />
+			
+				<c:if test='${not empty mensagem}'>
+					<div class="alert alert-danger alert-dismissible" style="padding-bottom: 30px;" role="alert">
+						<c:out value="${mensagem}" />
+					</div>
+				</c:if>
+				
+			
+			  	<h4>De:</h4>
+			  	<div class="form-row">
+			  		<div class="form-group col-md-2">
+					    <label for="txtAgenciaDe">Agência</label>
+					    <input type="text" class="form-control" value='<c:out value="${cliente.agencia}" />' id="txtAgenciaDe" readonly />
+					</div>
+					<div class="form-group col-md-3">
+					    <label for="txtContaDe">Conta Corrente</label>
+					    <input type="text" class="form-control cc" value='<c:out value="${cliente.conta}" />' id="txtContaDe" readonly />
+					</div>
+			  	</div>
+			  	
+			  	<br />
+			  	
+				<h4>Para:</h4>
+				<div class="form-row">
+					<div class="form-group col-md-2">
+					    <input type="text" class="form-control" name="agenciaString" id="txtAgenciaPara" placeholder="Agência" onblur="buscarCliente();">
+					</div>
+					<div class="form-group col-md-3">
+					    <input type="text" class="form-control cc" name="contaString" id="txtContaPara" placeholder="Conta Corrente" onblur="buscarCliente();">
+					</div>
+					<div class="form-group col-md-3">
+					    <input type="text" class="form-control valor" name="valorString" id="txtValor" placeholder="Valor" onblur="habilitarSubmit()">
+					</div>
+				</div>
+				
+				<div class="form-row">
+					<div class="form-group col-md-8 ">
+						 <small class="form-text text-muted"><span id=nomeCliente></span></small>
+					</div>
+				</div>
+				
+				<br />
+				
+				<div class="form-row">
+					<button type="submit" id="btnTransferir" class="btn btn-primary" disabled="disabled">Transferir</button>
+				</div>
+			</form>
+		
+		</div>
 	</body>
+	
+	<style>
+		.textovermelho {
+			color: red;
+		}
+	</style>
 </html>
