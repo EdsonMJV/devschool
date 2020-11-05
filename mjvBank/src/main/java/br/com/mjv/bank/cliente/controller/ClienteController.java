@@ -6,17 +6,23 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.mjv.bank.cliente.model.Cliente;
 import br.com.mjv.bank.cliente.service.ClienteService;
 import br.com.mjv.bank.exception.BusinessException;
+import br.com.mjv.bank.operacao.model.Operacao;
 
 @Controller
 @RequestMapping("/cliente")
@@ -91,6 +97,22 @@ public class ClienteController {
 		}
 		
 		
+	}
+	
+	/*
+	 * Este metodo deveria ser GET (/agencia/{agencia}/conta/{conta}) e nao POST. Foi feito assim so para mostrar o ajax no jquery passando dados no corpo
+	 */
+	@RequestMapping(path = "/buscarcliente", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE) 
+	@ResponseBody
+	public ResponseEntity<Cliente> buscarcliente(@RequestBody Operacao operacao) {
+		
+		Cliente cliente = service.findClienteByAgenciaConta(operacao.getCliente().getAgencia(), 
+				                                            operacao.getCliente().getConta());
+		if(cliente == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(cliente ,HttpStatus.OK);
 	}
 	
 }

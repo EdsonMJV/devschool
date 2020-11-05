@@ -34,7 +34,7 @@
 			  </ol>
 			</nav>
 			
-			<form action='/cliente/<c:out value="${id}" />/transferencia' method="post">
+			<form action='/cliente/<c:out value="${id}" />/operacao/transferencia' method="post">
 				<input type="hidden" name="cliente.id" id="hdId" />
 			
 				<c:if test='${not empty mensagem}'>
@@ -92,4 +92,62 @@
 			color: red;
 		}
 	</style>
+	
+	<script>
+	$(document).ready(function(){
+		$('.cc').mask("#0-0", {reverse: true});
+		$('.valor').mask("#.##0,00", {reverse: true});
+	});
+
+	function habilitarSubmit() {
+		if($('#hdId').val() == '' || $('#txtValor').val() == '') {
+			$('#btnTransferir').attr('disabled', true);
+		}
+		else {
+			$('#btnTransferir').attr('disabled', false);
+		}
+	}
+
+
+	function buscarCliente() {
+		
+		$('#nomeCliente').html('');
+		$('#hdId').val('');
+		
+		if($('#txtContaPara').val() == '' || $('#txtAgenciaPara').val() == '') {
+			return;
+		}
+		
+		$.ajax({
+			method: "POST",
+			url: '/cliente/buscarcliente',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				"cliente" : {
+					"agencia" : $('#txtAgenciaPara').val().replace(/[^0-9]/g, ""),
+					"conta" : $('#txtContaPara').val().replace(/[^0-9]/g, "")
+				}
+			}),
+			success: function(data, textStatus, xhr) {
+		        console.log(xhr.status);
+		        console.log(data);
+		        
+		        $('#nomeCliente').html('<strong>' + data.nome + '</strong>');
+		        $('#hdId').val(data.id);
+		    	$('#nomeCliente').removeClass('textovermelho');
+		    },
+		    error: function (jqXhr, textStatus, errorMessage) {
+		    	$('#nomeCliente').html("<i>Não foi encontrado nenhum cliente com essa agência/ conta</i>");
+		    	$('#nomeCliente').addClass('textovermelho');
+		    },
+		    complete: function (jqXhr, textStatus, errorMessage) {
+		    	habilitarSubmit();
+		    }
+		});
+	}
+
+	</script>
+	
+	
+	
 </html>

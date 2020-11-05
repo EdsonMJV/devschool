@@ -15,6 +15,15 @@ public class Cliente {
 	private Integer conta;
 	private Integer agencia;
 
+	
+	public Cliente() {
+		super();
+	}
+	
+	public Cliente(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

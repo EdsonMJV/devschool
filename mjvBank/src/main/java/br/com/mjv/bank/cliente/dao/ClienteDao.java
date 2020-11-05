@@ -25,5 +25,9 @@ public interface ClienteDao {
 	 */
 	Integer incluirCliente(Cliente cliente);
 
+	Cliente findClienteByAgenciaConta(Integer agencia, Integer conta);
+
+	void atualizarSaldo(Double saldo, Integer id);
+
 	
 }

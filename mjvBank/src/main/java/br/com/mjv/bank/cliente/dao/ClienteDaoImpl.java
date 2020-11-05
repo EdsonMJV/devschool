@@ -124,54 +124,30 @@ public class ClienteDaoImpl implements ClienteDao {
 		params.put("conta", cliente.getConta());
 		params.put("saldo", 0);
 		 
-		Integer result = (Integer) insertCliente.executeAndReturnKey(params);
-		return result;
-		
-		
-		
-		
-		/*
-		StringBuilder sql = new StringBuilder(" INSERT INTO TB_CLIENTE (nome, usuario, cpf, agencia, conta) VALUES ");
-		sql.append("(?, ?, ?, ?, ?)");
-		
-    	KeyHolder keyHolder = new GeneratedKeyHolder();
-    	template.getJdbcTemplate().update(
-    	    new PreparedStatementCreator() {
-    	        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-    	            PreparedStatement pst = con.prepareStatement(sql.toString(), new String[] {"id"});
-    	            pst.setString(1, cliente.getNome());
-    	            pst.setString(2, cliente.getUsuario());
-    	            pst.setString(3, cliente.getCpf());
-    	            pst.setInt(4, cliente.getAgencia());
-    	            pst.setInt(5, cliente.getConta());
-    	            return pst;
-    	        }
-    	    },
-    	    keyHolder);
-    	return (Integer)keyHolder.getKey();
-		*/
-		
-		
-		
-		
-		
-		
-		
-		
-		/*StringBuilder sql = new StringBuilder(" INSERT INTO TB_CLIENTE (nome, usuario, cpf, agencia, conta) VALUES ");
-		sql.append("(:nome, :usuario, :cpf, :agencia, :conta)");
-		
+		return (Integer) insertCliente.executeAndReturnKey(params);
+	}
+
+	@Override
+	public Cliente findClienteByAgenciaConta(Integer agencia, Integer conta) {
+		try {
+			String sql = "SELECT * FROM TB_CLIENTE WHERE agencia = :agencia AND conta = :conta";
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("agencia", agencia);
+			params.addValue("conta", conta);
+			return template.queryForObject(sql, params, new ClienteRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			LOGGER.info("Não foi encontado cliente com agencia: " + agencia + " e conta: " + conta);
+			return null;
+		}
+	}
+
+	@Override
+	public void atualizarSaldo(Double saldo, Integer id) {
+		String sql = "UPDATE TB_CLIENTE SET saldo = :saldo WHERE id = :id";
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		
-		params.addValue("usuario", cliente.getUsuario());
-		params.addValue("nome", cliente.getNome());
-		params.addValue("cpf", cliente.getCpf());
-		params.addValue("agencia", cliente.getAgencia());
-		params.addValue("conta", cliente.getConta());
-		
-		template.update(sql.toString(), params);
-		
-		return buscarClienteUsuario(cliente.getUsuario()).getId();*/
+		params.addValue("saldo", saldo);
+		params.addValue("id", id);
+		template.update(sql, params);
 	}
 
 
