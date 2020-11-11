@@ -128,6 +128,15 @@ public class ClienteDaoImpl implements ClienteDao {
 	}
 
 	@Override
+	public void atualizarSaldo(Double saldo, Integer id) {
+		String sql = "UPDATE TB_CLIENTE SET saldo = :saldo WHERE id = :id";
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("saldo", saldo);
+		params.addValue("id", id);
+		template.update(sql, params);
+	}
+
+	@Override
 	public Cliente findClienteByAgenciaConta(Integer agencia, Integer conta) {
 		try {
 			String sql = "SELECT * FROM TB_CLIENTE WHERE agencia = :agencia AND conta = :conta";
@@ -139,15 +148,6 @@ public class ClienteDaoImpl implements ClienteDao {
 			LOGGER.info("Não foi encontado cliente com agencia: " + agencia + " e conta: " + conta);
 			return null;
 		}
-	}
-
-	@Override
-	public void atualizarSaldo(Double saldo, Integer id) {
-		String sql = "UPDATE TB_CLIENTE SET saldo = :saldo WHERE id = :id";
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("saldo", saldo);
-		params.addValue("id", id);
-		template.update(sql, params);
 	}
 
 
