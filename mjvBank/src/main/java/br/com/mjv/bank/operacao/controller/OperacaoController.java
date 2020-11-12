@@ -1,5 +1,7 @@
 package br.com.mjv.bank.operacao.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import br.com.mjv.bank.operacao.service.OperacaoService;
 @Controller
 @RequestMapping("cliente/{id}/operacao")
 public class OperacaoController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(OperacaoController.class);
 	
 	@Autowired
 	private OperacaoService service;
@@ -44,6 +48,7 @@ public class OperacaoController {
 		try {
 			service.realizarTransferencia(id, operacao);
 		} catch (Exception e) {
+			LOGGER.error("Erro ao gravar transferencia: " + e.getMessage(), e);
 			mv.addObject("mensagem", "Houve um erro ao gravar a operação.");
 			mv.setViewName("/operacao/transferencia");
 		}
