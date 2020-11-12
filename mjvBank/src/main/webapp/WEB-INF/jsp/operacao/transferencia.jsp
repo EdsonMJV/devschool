@@ -117,10 +117,12 @@
 		if($('#txtContaPara').val() == '' || $('#txtAgenciaPara').val() == '') {
 			return;
 		}
+
+		//url: '/cliente/buscarcliente',
 		
 		$.ajax({
 			method: "POST",
-			url: '/cliente/buscarcliente',
+			url: '/mjvBank/cliente/buscarcliente',
 			contentType: 'application/json',
 			data: JSON.stringify({
 				"cliente" : {
