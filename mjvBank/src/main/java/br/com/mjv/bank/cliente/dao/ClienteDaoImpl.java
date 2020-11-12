@@ -129,7 +129,7 @@ public class ClienteDaoImpl implements ClienteDao {
 
 	@Override
 	public void atualizarSaldo(Double saldo, Integer id) {
-		String sql = "UPDATE TB_CLIENTE SET saldo = :saldo WHERE id = :id";
+		String sql = "UPDATE TB_CLIENTE SET saldo = :saldo WHERE id = :id ";
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("saldo", saldo);
 		params.addValue("id", id);
