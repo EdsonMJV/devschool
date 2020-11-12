@@ -63,7 +63,7 @@
 	    		
 	    		<div class="col-sm" style="margin-bottom: 10px">
 	    			<div class="card" style="width: 12rem;">
-	    				<a href="/cliente/<c:out value="${cliente.id}" />/transferencia">
+	    				<a href="/cliente/<c:out value="${cliente.id}" />/operacao/transferencia">
 							<img class="card-img-top displayed" src="/img/transfer.png" alt="Transferencia">
 						  	<div class="card-body">
 						    	<h5 class="card-title text-center">Transferência</h5>
