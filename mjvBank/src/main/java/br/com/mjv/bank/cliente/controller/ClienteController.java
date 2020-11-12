@@ -36,7 +36,21 @@ public class ClienteController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClienteController.class);
 	
+	
+	/**
+	 * Metodo para iniciar a pagina home. 
+	 * @param id - Id do cliente
+	 * @return
+	 */
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	public ModelAndView inicio(@PathVariable Integer id) {
+		ModelAndView mv = new ModelAndView("home");
+		mv.addObject("cliente", service.buscarPorId(id));
+		return mv;
+	}
+	
+	
+	@RequestMapping(path = "/{id}/meusdados", method = RequestMethod.GET)
 	public ModelAndView meusDados(@PathVariable Integer id) {
 		
 		ModelAndView mv = new ModelAndView("cliente/meusdados");

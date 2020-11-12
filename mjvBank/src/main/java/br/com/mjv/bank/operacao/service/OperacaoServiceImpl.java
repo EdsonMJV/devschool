@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.com.mjv.bank.cliente.dao.ClienteDao;
@@ -33,6 +34,7 @@ public class OperacaoServiceImpl implements OperacaoService {
 	}
 
 	@Override
+	@Transactional
 	public void realizarTransferencia(Integer idDe, Operacao operacao) {
 		
 		String semPonto = StringUtils.replace(operacao.getValorString(), ".", "");
@@ -53,7 +55,7 @@ public class OperacaoServiceImpl implements OperacaoService {
 		operacaoDe.setCliente(new Cliente(idDe));
 		operacaoDe.setData(new Date());
 		operacaoDe.setDescricao("TRANSFERENCIA PARA OUTRA CONTA");
-		operacaoDe.setIdTipoOperacao(3);
+		operacaoDe.setIdTipoOperacao(99);
 		operacaoDe.setValor(Double.valueOf(semVirgula));
 		incluirOperacao(operacaoDe);
 		
