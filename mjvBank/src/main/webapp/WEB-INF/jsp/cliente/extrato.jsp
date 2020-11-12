@@ -77,10 +77,10 @@
 							      	<td><c:out value="${op.descricao}" /></td>
 							      	
 							      	<fmt:setLocale value = "pt_BR"/>
-							      	<c:if test="${op.tipo == 'R'}">
+							      	<c:if test="${op.idTipoOperacao == 1}">
 							      		<td><span style="color: green;"><fmt:formatNumber value="${op.valor}" type = "currency"/></span></td>
 							      	</c:if>
-							      	<c:if test="${op.tipo != 'R'}">
+							      	<c:if test="${op.idTipoOperacao != 1}">
 							      		<td><span style="color: red;"><fmt:formatNumber value="${op.valor}" type = "currency"/></span></td>
 							      	</c:if>
 						    	</tr>
