@@ -1,6 +1,9 @@
 package br.com.mjv.bank.cliente.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +27,7 @@ import br.com.mjv.bank.cliente.model.Cliente;
 import br.com.mjv.bank.cliente.service.ClienteService;
 import br.com.mjv.bank.exception.BusinessException;
 import br.com.mjv.bank.operacao.model.Operacao;
+import br.com.mjv.bank.operacao.service.OperacaoService;
 
 @Controller
 @RequestMapping("/cliente")
@@ -30,6 +35,9 @@ public class ClienteController {
 
 	@Autowired
 	private ClienteService service;
+	
+	@Autowired
+	private OperacaoService operacaoService;
 	
 	private static final String MENSAGEM = "mensagem";
 	
@@ -127,6 +135,43 @@ public class ClienteController {
 		}
 		
 		return new ResponseEntity<>(cliente ,HttpStatus.OK);
+	}
+	
+	/**
+	 * Metodo que carrega o extrato conforme os filtros informados
+	 * @param id
+	 * @param dataInicio
+	 * @param dataFim
+	 * @return
+	 */
+	@RequestMapping(path = "/{id}/extrato", method = RequestMethod.GET)
+	public ModelAndView buscarExtrato(@PathVariable Integer id, 
+			                           @RequestParam(required = false) String dataInicio, 
+			                           @RequestParam(required = false) String dataFim) {
+		
+		ModelAndView mv = new ModelAndView("cliente/extrato");
+		
+		Date dtInicio = null;
+		Date dtFim = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		
+		try {
+			if(!StringUtils.isEmpty(dataInicio)) {
+				dtInicio = format.parse(dataInicio + " 00:00:00");
+			}
+			
+			if(!StringUtils.isEmpty(dataFim)) {
+				dtFim = format.parse(dataFim + " 23:59:59");
+			}
+		} catch (ParseException e) {
+			System.out.println("A Data Início e/ ou a Data Fim foi informada diferente do padrão dd/MM/yyyy");
+		}
+		
+		mv.addObject("operacoes", operacaoService.operacoesPorClientePeriodo(id, dtInicio, dtFim));
+		mv.addObject("id", id);
+		mv.addObject("dataInicio", dataInicio);
+		mv.addObject("dataFim", dataFim);
+		return mv;
 	}
 	
 }

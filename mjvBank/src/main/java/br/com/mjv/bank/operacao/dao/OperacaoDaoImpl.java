@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.mjv.bank.operacao.model.Operacao;
+import br.com.mjv.bank.operacao.model.OperacaoRowMapper;
 
 @Repository
 public class OperacaoDaoImpl implements OperacaoDao {
@@ -33,8 +34,21 @@ public class OperacaoDaoImpl implements OperacaoDao {
 
 	@Override
 	public List<Operacao> operacoesPorClientePeriodo(Integer idCliente, Date dataInicio, Date dataFim) {
-		// TODO Auto-generated method stub
-		return null;
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		StringBuilder sql = new StringBuilder("SELECT * FROM TB_OPERACAO WHERE id_cliente = :idCliente ");
+		params.addValue("idCliente", idCliente);
+		
+		if(dataInicio != null) {
+			sql.append(" AND DATA >= :inicio ");
+			params.addValue("inicio", dataInicio);
+		}
+		
+		if(dataFim != null) {
+			sql.append(" AND DATA <= :fim ");
+			params.addValue("fim", dataFim);
+		}
+		
+		return template.query(sql.toString(), params, new OperacaoRowMapper());
 	}
 
 	@Override
