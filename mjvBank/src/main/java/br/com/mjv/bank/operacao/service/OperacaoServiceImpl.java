@@ -55,7 +55,7 @@ public class OperacaoServiceImpl implements OperacaoService {
 		operacaoDe.setCliente(new Cliente(idDe));
 		operacaoDe.setData(new Date());
 		operacaoDe.setDescricao("TRANSFERENCIA PARA OUTRA CONTA");
-		operacaoDe.setIdTipoOperacao(99);
+		operacaoDe.setIdTipoOperacao(3);
 		operacaoDe.setValor(Double.valueOf(semVirgula));
 		incluirOperacao(operacaoDe);
 		

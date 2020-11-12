@@ -48,6 +48,8 @@ public class OperacaoDaoImpl implements OperacaoDao {
 			params.addValue("fim", dataFim);
 		}
 		
+		sql.append(" ORDER BY data desc");
+		
 		return template.query(sql.toString(), params, new OperacaoRowMapper());
 	}
 
